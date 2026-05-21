@@ -108,3 +108,13 @@ jobs:
       - name: Exécution des tests
         run: npm test
 
+  smoke-test:
+    name: Test de fumée du serveur
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Démarrage du serveur et capture HTTP
+        run: |
+          python3 -m http.server 8080 &
+          sleep 2
+          curl --fail http://localhost:8080/index.html
