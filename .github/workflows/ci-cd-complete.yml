@@ -2,9 +2,9 @@ name: Pipeline CI/CD ÉcoShop Intégral
 
 on:
   push:
-    branches: ["**"]
+    branches: ["main","test"]
   pull_request:
-    branches: ["**"]
+    branches: ["main","test"]
 
 jobs:
 
