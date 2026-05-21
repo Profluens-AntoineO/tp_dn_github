@@ -87,7 +87,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Nettoyage des dossiers de développement (.git, .github)
-        run: rm -rf .git .github
+        run: rm -rf .git .github .idea node_modules *.json .* eslint* package* light*
 
       - name: Déploiement Production SFTP Sovereign
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
