@@ -124,14 +124,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # 1. On configure proprement Node.js (comme dans les autres jobs)
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Serveur temporaire
         run: |
           python3 -m http.server 8080 &
           sleep 2
+
+      # 2. On injecte les variables d'environnement pour Puppeteer
       - name: Audit EcoIndex
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+          PUPPETEER_EXECUTABLE_PATH: '/usr/bin/google-chrome'
         run: |
-          npm install -g lighthouse-plugin-ecoindex
-          npx lighthouse-plugin-ecoindex  collect --url http://localhost:8080/index.html
+          npx lighthouse-plugin-ecoindex collect --url http://localhost:8080/index.html
 
   e2e-testing:
     name: Tests de bout en bout Playwright
