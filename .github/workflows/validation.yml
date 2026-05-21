@@ -95,3 +95,16 @@ jobs:
           node-version: 20
       - name: Analyse npm audit
         run: npm audit --audit-level=high
+
+  unit-tests:
+    name: Tests unitaires algorithmiques
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - name: Exécution des tests
+        run: npm test
+
