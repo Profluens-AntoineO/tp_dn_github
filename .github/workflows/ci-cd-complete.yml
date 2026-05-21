@@ -19,8 +19,7 @@ jobs:
       # This creates a temporary package environment and installs the required plugins
       - name: Préparer l'environnement des Linters
         run: |
-          npm init -y
-          npm install @eslint/config@latest
+          npm install -y
           
 
       # Validation HTML
