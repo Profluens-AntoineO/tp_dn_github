@@ -16,18 +16,23 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
+      # This creates a temporary package environment and installs the required plugins
+      - name: Préparer l'environnement des Linters
+        run: |
+          npm init -y
+          npm pkg set type="module"
+          npm install --save-dev eslint@10.4.0 @eslint/js@10.4.0 htmlhint stylelint stylelint-config-standard
+          
 
-      # Validation HTML (Vérifie les balises non fermées, les ID en double, les attributs manquants)
+      # Validation HTML
       - name: Contrôle HTML
-        run: htmlhint "**/*.html"
+        run: npx htmlhint "**/*.html"
 
-      # Validation CSS (Détecte les erreurs de syntaxe et propriétés invalides)
-#      - name: Contrôle CSS
-#        run: npx stylelint "**/*.css"
+      # Validation CSS (Uncomment when you want to use it)
+      #      - name: Contrôle CSS
+      #        run: npx stylelint "**/*.css"
 
-      # Validation JavaScript (Détecte les variables non utilisées, les points-virgules manquants, la syntaxe cassée)
+      # Validation JavaScript
       - name: Contrôle JavaScript
         run: npx eslint "**/*.js"
 
