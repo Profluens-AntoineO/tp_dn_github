@@ -131,7 +131,7 @@ jobs:
       - name: Audit EcoIndex
         run: |
           npm install -g lighthouse-plugin-ecoindex
-          npx lighthouse-plugin-ecoindex  http://localhost:8080/index.html
+          npx lighthouse-plugin-ecoindex  collect --url http://localhost:8080/index.html
 
   e2e-testing:
     name: Tests de bout en bout Playwright
