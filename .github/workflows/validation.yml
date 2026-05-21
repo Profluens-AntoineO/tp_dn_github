@@ -130,8 +130,8 @@ jobs:
           sleep 2
       - name: Audit EcoIndex
         run: |
-          npm install -g ecoindex-cli
-          ecoindex-cli --url http://localhost:8080/index.html --budget-grade B
+          npm install -g lighthouse-plugin-ecoindex
+          npx lighthouse-plugin-ecoindex  http://localhost:8080/index.html
 
   e2e-testing:
     name: Tests de bout en bout Playwright
