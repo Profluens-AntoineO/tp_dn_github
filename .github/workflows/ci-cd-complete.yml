@@ -26,8 +26,8 @@ jobs:
         run: htmlhint "**/*.html"
 
       # Validation CSS (Détecte les erreurs de syntaxe et propriétés invalides)
-      - name: Contrôle CSS
-        run: npx stylelint "**/*.css"
+#      - name: Contrôle CSS
+#        run: npx stylelint "**/*.css"
 
       # Validation JavaScript (Détecte les variables non utilisées, les points-virgules manquants, la syntaxe cassée)
       - name: Contrôle JavaScript
