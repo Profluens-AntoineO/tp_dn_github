@@ -1,4 +1,4 @@
-name: Pipeline CI/CD ÉcoShop Intégral
+name: Pipeline CI/CD ÉcoShop Deploy FTP
 
 on:
   push:
