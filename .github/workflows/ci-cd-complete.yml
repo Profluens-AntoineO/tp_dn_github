@@ -48,5 +48,5 @@ jobs:
         with:
           urls: |
             http://localhost:8080/index.html
-          budgetPath: ./lighthouse-budget.json
+          configPath: ./lighthouserc.json
           uploadArtifacts: true
