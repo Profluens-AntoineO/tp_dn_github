@@ -15,11 +15,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      # Installe les validateurs officiels
-      - name: Installer les Linters
-        run: |
-          npm install -g htmlhint
-          npm install --save-dev eslint stylelint stylelint-config-standard
+
+      - name: Install dependencies
+        run: npm ci
 
       # Validation HTML (Vérifie les balises non fermées, les ID en double, les attributs manquants)
       - name: Contrôle HTML
