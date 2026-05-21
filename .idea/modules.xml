@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/tp_dn_github.iml" filepath="$PROJECT_DIR$/tp_dn_github.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../course_helper/modules/optimisation_pour_la_mise_en_production/cours/04_Session/ressources/tp_dn_github.iml" filepath="$PROJECT_DIR$/../course_helper/modules/optimisation_pour_la_mise_en_production/cours/04_Session/ressources/tp_dn_github.iml" />
     </modules>
   </component>
 </project>

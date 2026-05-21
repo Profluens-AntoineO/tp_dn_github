@@ -80,10 +80,13 @@ jobs:
   deploy-to-staging:
     name: Déploiement Environnement Recette (GitHub Pages)
     runs-on: ubuntu-latest
-    # 🛡️ SÉCURITÉ : Attend impérativement la réussite de la Qualité ET de la Perf
+    # 🛡️ SÉCURITÉ : Attend impérativement la fin de la Qualité ET de la Perf
     needs: [quality-check, a11y-audit]
     # 🎯 FILTRE : S'exécute uniquement lors d'un push sur la branche 'test'
-    if: github.event_name == 'push' && github.ref == 'refs/heads/test'
+    if: |
+      always() &&
+      (github.event_name == 'push' && github.ref == 'refs/heads/test') &&
+      (needs.quality-check.result == 'success' || needs.a11y-audit.result == 'success')
     permissions:
       contents: write
     steps:

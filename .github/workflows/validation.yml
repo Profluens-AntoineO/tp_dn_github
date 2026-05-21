@@ -2,9 +2,9 @@ name: Pipeline CI/CD ÉcoShop Validation
 
 on:
   push:
-    branches: ["**"]
+    branches: ["validation_only"]
   pull_request:
-    branches: ["**"]
+    branches: ["validation_only"]
 
 jobs:
   quality-check:
