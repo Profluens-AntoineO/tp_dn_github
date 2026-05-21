@@ -132,3 +132,17 @@ jobs:
         run: |
           npm install -g ecoindex-cli
           ecoindex-cli --url http://localhost:8080/index.html --budget-grade B
+
+  e2e-testing:
+    name: Tests de bout en bout Playwright
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - name: Installation des navigateurs Playwright
+        run: npx playwright install --with-deps
+      - name: Exécution des scénarios E2E
+        run: npx playwright test
