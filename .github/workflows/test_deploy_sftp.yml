@@ -25,5 +25,5 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           local_path: './'      # Note le changement de nom du paramètre
-          remote_path: '~/www/'
+          remote_path: './www/'
           ssh_private_key: ''
