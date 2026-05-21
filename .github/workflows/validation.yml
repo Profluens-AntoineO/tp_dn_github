@@ -118,3 +118,17 @@ jobs:
           python3 -m http.server 8080 &
           sleep 2
           curl --fail http://localhost:8080/index.html
+
+  green-it-audit:
+    name: Validation éco-conception EcoIndex
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Serveur temporaire
+        run: |
+          python3 -m http.server 8080 &
+          sleep 2
+      - name: Audit EcoIndex
+        run: |
+          npm install -g ecoindex-cli
+          ecoindex-cli --url http://localhost:8080/index.html --budget-grade B
