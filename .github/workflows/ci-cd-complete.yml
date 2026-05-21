@@ -14,14 +14,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       # This creates a temporary package environment and installs the required plugins
       - name: Préparer l'environnement des Linters
         run: |
           npm init -y
           npm pkg set type="module"
-          npm install --save-dev eslint @eslint/js htmlhint stylelint stylelint-config-standard
+          npm install --save-dev @eslint/config@latest  htmlhint stylelint stylelint-config-standard
           
 
       # Validation HTML
