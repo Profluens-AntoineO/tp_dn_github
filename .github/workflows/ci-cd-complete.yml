@@ -7,6 +7,7 @@ on:
     branches: ["**"]
 
 jobs:
+
   quality-check:
     name: Contrôle Linter Syntaxique
     runs-on: ubuntu-latest
@@ -20,7 +21,7 @@ jobs:
       - name: Préparer l'environnement des Linters
         run: |
           npm install -y
-          
+
 
       # Validation HTML
       - name: Contrôle HTML
@@ -50,3 +51,47 @@ jobs:
             http://localhost:8080/index.html
           configPath: ./lighthouserc.json
           uploadArtifacts: true
+
+  # ==========================================
+  # DÉPLOIEMENT TEST (GitHub Pages)
+  # ==========================================
+  deploy-to-staging:
+    name: Déploiement Environnement Recette (GitHub Pages)
+    runs-on: ubuntu-latest
+    # 🛡️ SÉCURITÉ : Attend impérativement la réussite de la Qualité ET de la Perf
+    needs: [quality-check, perf-audit]
+    # 🎯 FILTRE : S'exécute uniquement lors d'un push sur la branche 'test'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/test'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Déploiement Staging
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+
+  # ==========================================
+  # ÉTAPE 4 : DÉPLOIEMENT PROD (Serveur SFTP)
+  # ==========================================
+  deploy-to-production:
+    name: Déploiement Production Souveraine (Alwaysdata)
+    runs-on: ubuntu-latest
+    # 🛡️ SÉCURITÉ : Attend impérativement la réussite de la Qualité ET de la Perf
+    needs: [quality-check, perf-audit]
+    # 🎯 FILTRE : S'exécute uniquement lors d'un push sur 'main' ou 'master'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Déploiement Production SFTP Sovereign
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.SFTP_SERVER }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: 22
+          local-dir: ./
+          server-dir: /www/
