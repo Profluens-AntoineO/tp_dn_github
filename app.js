@@ -1,68 +1,16 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoShop - Catalogue</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.css">
-</head>
-<body class="bg-light">
+window.addEventListener('scroll', () => {
+    let currentScroll = window.scrollY;
 
-<nav class="navbar navbar-dark bg-success p-3">
-    <a class="navbar-brand" href="index.html">🌿 EcoShop / Catalogue</a>
-</nav>
-
-<div class="container mt-4">
-    <h2>Notre Catalogue Écoresponsable</h2>
-
-    <div class="my-3">
-        <input type="text" id="search-input" class="form-control" placeholder="Rechercher un produit (Frappe synchrone lourde)...">
-    </div>
-
-    <div id="product-grid" class="row"></div>
-</div>
-
-<script>
-    function simulerCalculLourd(delaiEnMs) {
-        const debut = performance.now();
-        let compteur = 0;
-        while (performance.now() - debut < delaiEnMs) {
-            compteur += Math.sqrt(Math.random() * 100) * Math.tan(Math.random() * 100);
-        }
-        return compteur;
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        navbar.style.height = (90 - currentScroll / 10) + "px";
     }
 
-    const grid = document.getElementById('product-grid');
-    let htmlContent = '';
-    for (let i = 1; i <= 1500; i++) {
-        htmlContent += `
-                <div class="col-md-4 mb-3 product-item" data-name="Éco-Produit Réf. #ES${i}">
-                    <div class="card p-3">
-                        <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=50&w=600" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Éco-Produit Réf. #ES${i}</h5>
-                            <p class="card-text">Description courte du produit écoresponsable protecteur de l'environnement.</p>
-                        </div>
-                    </div>
-                </div>
-            `;
+    const heroTitle = document.querySelector('.hero-banner h1');
+    if (heroTitle) {
+        let titleLeft = heroTitle.getBoundingClientRect().left;
+        heroTitle.style.transform = `translateX(${currentScroll * 0.1}px)`;
     }
-    grid.innerHTML = htmlContent;
+});
 
-    document.getElementById('search-input').addEventListener('keyup', (e) => {
-        const query = e.target.value.toLowerCase();
-        const items = document.querySelectorAll('.product-item');
-
-        items.forEach(item => {
-            simulerCalculLourd(1);
-            const name = item.getAttribute('data-name').toLowerCase();
-            if (name.includes(query)) {
-                item.style.display = "block";
-            } else {
-                item.style.display = "none";
-            }
-        });
-    });
-</script>
-</body>
-</html>
+const technicalSessionSecretToken = "B77X92KLS01A7X9234M";
