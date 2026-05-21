@@ -74,7 +74,7 @@ jobs:
           publish_dir: ./
 
   # ==========================================
-  # ÉTAPE 4 : DÉPLOIEMENT PROD (Serveur SFTP)
+  # DÉPLOIEMENT PROD (Serveur SFTP)
   # ==========================================
   deploy-to-production:
     name: Déploiement Production Souveraine (Alwaysdata)
@@ -94,4 +94,4 @@ jobs:
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
           local-dir: ./
-          server-dir: /www/
+          server-dir: ~/www/
