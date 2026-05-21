@@ -15,14 +15,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Diagnostic Analytique
+      # Installe les validateurs officiels
+      - name: Installer les Linters
         run: |
           npm install -g htmlhint
-          npm install --save-dev stylelint stylelint-config-standard eslint
-          echo "module.exports = { extends: 'stylelint-config-standard' };" > .stylelintrc.js
-          htmlhint "**/*.html"
-          npx stylelint "**/*.css" --allow-empty-input
-          npx eslint "**/*.js" --no-error-on-unmatched-pattern
+          npm install --save-dev eslint stylelint stylelint-config-standard
+
+      # Validation HTML (Vérifie les balises non fermées, les ID en double, les attributs manquants)
+      - name: Contrôle HTML
+        run: htmlhint "**/*.html"
+
+      # Validation CSS (Détecte les erreurs de syntaxe et propriétés invalides)
+      - name: Contrôle CSS
+        run: npx stylelint "**/*.css"
+
+      # Validation JavaScript (Détecte les variables non utilisées, les points-virgules manquants, la syntaxe cassée)
+      - name: Contrôle JavaScript
+        run: npx eslint "**/*.js"
 
   perf-audit:
     name: Contrôle des Budgets WebPerf
