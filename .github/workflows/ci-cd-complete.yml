@@ -21,7 +21,7 @@ jobs:
         run: |
           npm init -y
           npm pkg set type="module"
-          npm install --save-dev eslint@10.4.0 @eslint/js@10.4.0 htmlhint stylelint stylelint-config-standard
+          npm install --save-dev eslint @eslint/js htmlhint stylelint stylelint-config-standard
           
 
       # Validation HTML
