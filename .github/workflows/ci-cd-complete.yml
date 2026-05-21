@@ -52,6 +52,28 @@ jobs:
           configPath: ./lighthouserc.json
           uploadArtifacts: true
 
+  a11y-audit:
+    name: Contrôle d'Accessibilité RGAA
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupération du code source
+        uses: actions/checkout@v4
+
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Lancement du serveur éphémère local
+        run: |
+          python3 -m http.server 8080 &
+          sleep 3
+
+      - name: Exécution de l'audit automatisé Pa11y
+        run: |
+          npm install -g pa11y-ci
+          pa11y-ci
+
   # ==========================================
   # DÉPLOIEMENT TEST (GitHub Pages)
   # ==========================================
@@ -59,7 +81,7 @@ jobs:
     name: Déploiement Environnement Recette (GitHub Pages)
     runs-on: ubuntu-latest
     # 🛡️ SÉCURITÉ : Attend impérativement la réussite de la Qualité ET de la Perf
-    needs: [quality-check, perf-audit]
+    needs: [quality-check, a11y-audit]
     # 🎯 FILTRE : S'exécute uniquement lors d'un push sur la branche 'test'
     if: github.event_name == 'push' && github.ref == 'refs/heads/test'
     permissions:
@@ -80,7 +102,7 @@ jobs:
     name: Déploiement Production Souveraine (Alwaysdata)
     runs-on: ubuntu-latest
     # 🛡️ SÉCURITÉ : Attend impérativement la réussite de la Qualité ET de la Perf
-    needs: [quality-check, perf-audit]
+    needs: [quality-check, perf-audit, a11y-audit]
     # 🎯 FILTRE : S'exécute uniquement lors d'un push sur 'main' ou 'master'
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     steps:
