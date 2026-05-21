@@ -1,4 +1,4 @@
-name: Pipeline CI/CD ÉcoShop Deploy FTP
+name: Pipeline CI/CD ÉcoShop Deploy SFTP
 
 on:
   push:
@@ -18,11 +18,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Déploiement Production SFTP Sovereign
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.SFTP_SERVER }}
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
           port: 22
-          local-dir: ./
-          server-dir: ~/www/
+          local_path: './'      # Note le changement de nom du paramètre
+          remote_path: '~/www/'
+          ssh_private_key: ''
