@@ -20,8 +20,7 @@ jobs:
       - name: Préparer l'environnement des Linters
         run: |
           npm init -y
-          npm pkg set type="module"
-          npm install --save-dev eslint @eslint/js htmlhint stylelint stylelint-config-standard
+          npm install @eslint/config@latest
           
 
       # Validation HTML
