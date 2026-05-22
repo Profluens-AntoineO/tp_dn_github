@@ -125,24 +125,52 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. On configure proprement Node.js (comme dans les autres jobs)
       - name: Configuration de Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Installer le navigateur EcoIndex
+        run: npx lighthouse-plugin-ecoindex browser-install
 
       - name: Serveur temporaire
         run: |
           python3 -m http.server 8080 &
           sleep 2
 
-      # 2. On injecte les variables d'environnement pour Puppeteer
-      - name: Audit EcoIndex
-        env:
-          PUPPETEER_SKIP_DOWNLOAD: 'true'
-          PUPPETEER_EXECUTABLE_PATH: '/usr/bin/google-chrome'
+      # --- LA NOUVELLE ÉTAPE DYNAMIQUE ---
+      - name: Audit EcoIndex sur toutes les pages
         run: |
-          npx lighthouse-plugin-ecoindex collect --url http://localhost:8080/index.html
+          mkdir -p ./ecoindex-reports
+          
+          # 1. On cherche tous les fichiers .html en ignorant le dossier node_modules
+          find . -type f -name "*.html" -not -path "*/node_modules/*" | while read -r file; do
+          
+            # 2. On nettoie le nom du fichier (on retire le "./" au début)
+            relative_path="${file#./}"
+            echo "=> Lancement de l'audit pour : $relative_path"
+          
+            # 3. On crée un nom de fichier de rapport propre (remplace les / par des -)
+            report_name=$(echo "$relative_path" | sed 's/\//-/g' | sed 's/\.html//g')
+          
+            # 4. On lance la commande pour chaque page
+            npx lighthouse-plugin-ecoindex collect \
+              --url "http://localhost:8080/$relative_path" \
+              --output-path "./ecoindex-reports/$report_name" \
+              --output html \
+              --output json
+          
+          done
+
+      - name: Sauvegarder les rapports d'audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: ecoindex-reports-all
+          path: ./ecoindex-reports
 
   e2e-testing:
     name: Tests de bout en bout Playwright

@@ -9,7 +9,8 @@ export default [
             sourceType: "module",
             globals: {
                 ...globals.browser, // Indique que le code tourne dans un navigateur (accès à window, document, etc.)
-                ...globals.jquery   // Autorise l'utilisation de jQuery ($) vu dans le code de départ
+                ...globals.jquery,   // Autorise l'utilisation de jQuery ($) vu dans le code de départ
+                ...globals.jest // Exclue les tests de Jest
             }
         },
         rules: {
